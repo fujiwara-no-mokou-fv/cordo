@@ -1,4 +1,4 @@
-#Pragma once
+#pragma once
 #include<stdint.h>
 #include<string.h>
 #include"cpu.h"

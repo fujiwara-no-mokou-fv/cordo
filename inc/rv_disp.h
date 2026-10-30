@@ -9,7 +9,7 @@
     rv_instr_t instr,
     rv_field_desc_t desc){
   rv_field_t field;
-  field.raw = (instr.raw >> desc.offset) & ((1U << desc.width) - 1U);
+  field = (instr.raw >> desc.offset) & ((1U << desc.width) - 1U);
   
   return field;
 }

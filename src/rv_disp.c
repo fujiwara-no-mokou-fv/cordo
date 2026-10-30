@@ -12,12 +12,12 @@ void halt(cpu_state_t state, rv_instr_t instr) {
 
 void add(cpu_state_t state, rv_instr_t instr) { 
   auto rv_state = (rv_cpu_state_t *)state;
-  rv_x_reg_index_t rd = get_rv_field(instr, RD).index;
-  rv_x_reg_index_t rs1 = get_rv_field(instr, RS1).index;
-  rv_x_reg_index_t rs2 = get_rv_field(instr, RS2).index;
+  rv_field_t rd = get_rv_field(instr, RD);
+  rv_field_t rs1 = get_rv_field(instr, RS1);
+  rv_field_t rs2 = get_rv_field(instr, RS2);
   
-  if(rd.val != 0) {
-  rv_state->x_reg[rd.val] = rv_state->x_reg[rs1.val] + rv_state->x_reg[rs2.val];
+  if(rd != 0) {
+  rv_state->x_reg[rd] = rv_state->x_reg[rs1] + rv_state->x_reg[rs2];
   }
 
   rv_state->pc += sizeof(rv_instr_t);
@@ -30,13 +30,14 @@ void add(cpu_state_t state, rv_instr_t instr) {
 
 void addi(cpu_state_t state, rv_instr_t instr) {
   auto rv_state = (rv_cpu_state_t *)state;
-  rv_x_reg_index_t rd = get_rv_field(instr, RD).index;
-  rv_x_reg_index_t rs1 = get_rv_field(instr, RS1).index;
-  rv_imm_t imm = get_rv_field(instr, I_IMM).imm;
+  rv_field_t rd = get_rv_field(instr, RD);
+  rv_field_t rs1 = get_rv_field(instr, RS1);
+  rv_imm_t imm;
+  imm.raw = get_rv_field(instr, I_IMM);
   rv_i_imm_t i_imm = extr_i_imm(imm);
 
-  if(rd.val != 0) {
-  rv_state->x_reg[rd.val] = rv_state->x_reg[rs1.val] + i_imm.val;
+  if(rd != 0) {
+  rv_state->x_reg[rd] = rv_state->x_reg[rs1] + i_imm.val;
   }
 
   rv_state->pc += sizeof(rv_instr_t);
@@ -47,7 +48,7 @@ void addi(cpu_state_t state, rv_instr_t instr) {
     rv_state,
     next_instr);
 }
-
+ 
 void rv_dispatch_0x33(cpu_state_t state, rv_instr_t instr) {
   static const rv_dispatch_t dispatch[16U] = {
     [0U ... 15U] = halt,
@@ -55,8 +56,8 @@ void rv_dispatch_0x33(cpu_state_t state, rv_instr_t instr) {
   };
 
   [[gnu::musttail]] return dispatch[
-    get_rv_field(instr, F7_BIT5).func.val << 3U 
-    | (get_rv_field(instr, F3).func.val)](
+    get_rv_field(instr, F7_BIT5) << 3U 
+    | (get_rv_field(instr, F3))](
       state,
       instr);
 }
@@ -66,7 +67,7 @@ void rv_dispatch_0x13(cpu_state_t state, rv_instr_t instr) {
     [0U ... 7U] = halt,
     [0x00] = addi
   };
-  [[gnu::musttail]] return dispatch[get_rv_field(instr, F3).func.val](
+  [[gnu::musttail]] return dispatch[get_rv_field(instr, F3)](
     state,
     instr);
 }
@@ -77,7 +78,7 @@ void rv_32i_dispatcher (cpu_state_t state, rv_instr_t instr) {
     [0x33] = rv_dispatch_0x33,
     [0x13] = rv_dispatch_0x13
   };
-  [[gnu::musttail]] return dispatch[get_rv_field(instr, OP).opcode.val](
+  [[gnu::musttail]] return dispatch[get_rv_field(instr, OP)](
       state,
       instr);
 }

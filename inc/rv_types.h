@@ -57,26 +57,7 @@ typedef struct {
 } rv_imm_t;
 
 typedef struct {
-  uint32_t val;
-} rv_opcode_t;
-
-typedef struct {
-  uint32_t val;
-} rv_func_t;
-
-typedef struct {
-  uint32_t val;
-} rv_x_reg_index_t;
-
-typedef struct {
   int32_t val;
 } rv_i_imm_t;
 
-typedef union {
-  rv_opcode_t opcode;
-  rv_func_t func;
-  rv_x_reg_index_t index;
-  rv_imm_t imm;
-  uint32_t raw;
-} rv_field_t;
-
+typedef uint32_t rv_field_t;
