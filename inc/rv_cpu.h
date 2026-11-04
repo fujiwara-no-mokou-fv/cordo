@@ -8,7 +8,7 @@
 constexpr size_t CACHE_LINE = 64U;
 constexpr size_t MEM_PAGE = 2048U;
 
-typedef void (*rv_dispatch_t)(cpu_state_t state, rv_instr_t);
+typedef void (*rv_dispatch_t)(cpu_state_t state, instr_t instr);
 
 typedef struct [[gnu::aligned(64)]] {
   rv_dispatch_t dispatcher;
@@ -25,11 +25,11 @@ typedef struct {
   uint32_t pc;
 } rv_cpu_arch_desc_t;
 
-[[gnu::always_inline]] static inline rv_instr_t fetch_rv_instr(
+[[gnu::always_inline]] static inline instr_t fetch_rv_instr(
     rv_cpu_state_t *state) {
 
-  rv_instr_t instr;
-  memcpy(&instr.raw, &state->mem[state->pc], sizeof(rv_instr_t));
+  instr_t instr;
+  memcpy(&instr.raw, &state->mem[state->pc], sizeof(instr));
   
   return instr;
 }

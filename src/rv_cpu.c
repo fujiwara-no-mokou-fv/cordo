@@ -28,7 +28,7 @@ void init_rv_cpu(cpu_state_t *state, cpu_arch_desc_t desc) {
   
   memset(rv_state->mem, 0, rv_desc->mem_sz);
   
-  if(rv_desc->pc > rv_desc->mem_sz || sizeof(rv_instr_t) > rv_desc->mem_sz) {
+  if(rv_desc->pc > rv_desc->mem_sz || sizeof(instr_t) > rv_desc->mem_sz) {
     free(rv_state->mem);
     free(rv_state);
     *state = nullptr;
@@ -49,7 +49,7 @@ void init_rv_cpu(cpu_state_t *state, cpu_arch_desc_t desc) {
 
 void exec_rv_cpu(cpu_state_t state) {
   auto rv_state = (rv_cpu_state_t *)state;
-  rv_instr_t first_instr = fetch_rv_instr(rv_state);
+  instr_t first_instr = fetch_rv_instr(rv_state);
   rv_state->dispatcher(state, first_instr);
 }
 
