@@ -6,11 +6,11 @@ Written in C23 with GNU extensions.
 
 ## Status
 
-Currently supports a subset of **RV32I** as an MVP. Currently implements two instructions from RISC-V (RV32I) - add, addi. More instructions and ISAs sre planed.
+Currently supports a subset of **RV32I** as an MVP. Currently implements two instructions from RISC-V (RV32I) - add, addi. More instructions and ISAs are planed.
 
 The current focus is on validating the core architecture and the tail-call dispatch mechanism.
 
-## Bild
+## Biuld
 
 Requires **GCC 14+** (for C23 support and `[[gnu::musttail]]`).
 Optimization is strictly required (`-O2` or higher) for tail-call elimination. Compiling without it will cause a stack overflow.
