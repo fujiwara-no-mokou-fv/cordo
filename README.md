@@ -10,7 +10,7 @@ Currently supports a subset of **RV32I** as an MVP. Currently implements two ins
 
 The current focus is on validating the core architecture and the tail-call dispatch mechanism.
 
-## Biuld
+## Build
 
 Requires **GCC 14+** (for C23 support and `[[gnu::musttail]]`).
 Optimization is strictly required (`-O2` or higher) for tail-call elimination. Compiling without it will cause a stack overflow.
